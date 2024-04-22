@@ -1,68 +1,66 @@
 import pandas as pd
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.pipeline import Pipeline
+import numpy as np
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import RandomOverSampler
 
-class column_filter(BaseEstimator, TransformerMixin):
-    def fit(self, X, y=None):
-        return self
-    
-    def transform(self, X):
+class PreProcess:
+    def __init__(self, file):
+        self.df = pd.read_csv(file)
+
+    def columnFilter(self):
         cols = ['race', 'gender', 'age', 'time_in_hospital', 
                 'num_lab_procedures', 'num_procedures', 'num_medications',
                 'number_outpatient', 'number_emergency', 'number_inpatient', 
                 'number_diagnoses', 'diabetesMed', 'readmitted']
-        return X[cols]
-    
-class text_cleaner(BaseEstimator, TransformerMixin):
-    def fit(self, X, y=None):
-        return self
-    
-    def transform(self, X):
-        X['age'] = X['age'].str.replace(')',']')
-        return X
-    
-class none_dropper(BaseEstimator, TransformerMixin):
-    def fit(self, X, y=None):
-        return self
-    
-    def transform(self, X):
-        return X[X['race'] != '?']
-    
-class binary_mapper(BaseEstimator, TransformerMixin):
-    def fit(self, X, y=None):
-        return self
-    
-    def transform(self, X):
-        X['gender'] = X['gender'].map({'Male': 0,'Female': 1})
-        X['diabetesMed'] = X['diabetesMed'].map({'No': 0,'Yes': 1})
-        return X
-    
-class feature_encoder(BaseEstimator, TransformerMixin):
-    def fit(self, X, y=None):
-        return self
-    
-    def transform(self, X):
-        encoder = OneHotEncoder()
-        matrix = encoder.fit_transform(X[['race']]).toarray()
+        df = self.df[cols]
+        return df
 
-        vals = list(set(X['race'].values)) + list(set(X['age'].values))
+    def textCleaner(self):
+        df = self.columnFilter()
+        df['age'] = df['age'].str.replace(')',']')
+        return df
+    
+    def noneDropper(self):
+        df = self.textCleaner()
+        cond = df['race'] != '?'
+        return df[cond]
+    
+    def binaryMapper(self):
+        df = self.noneDropper()
+        df['gender'] = df['gender'].map({'Male': 0,'Female': 1})
+        df['diabetesMed'] = df['diabetesMed'].map({'No': 0,'Yes': 1})
+        df['readmitted'] = df['readmitted'].map({'NO': 0, '>30': 0, '<30': 1})
+        df['age'] = df['age'].map({'[50-60]': 1, '[60-70]': 2, '[70-80]': 3, '[80-90]': 4, '[90-100]': 5})
+        return df
+    
+    def featureEncoder(self):
+        df = self.binaryMapper()
+        encoder = OneHotEncoder()
+        matrix = encoder.fit_transform(df[['race']]).toarray()
+
+        vals = list(set(df['race'].values))
 
         for i in range(len(matrix.T)):
-            X.insert(0, vals[i], matrix.T[i])
+            df.insert(0, vals[i], matrix.T[i])
 
-        return X.drop(['race', 'age'], axis=1)
+        return df.drop(['race'], axis=1)
     
-def runPipeline(path):
-    df = pd.read_csv(path)
-    pipe = Pipeline([
-        ('filter', column_filter()),
-        ('cleaner', text_cleaner()),
-        ('dropper', none_dropper()),
-        ('mapper', binary_mapper()),
-        ('encoder', feature_encoder())
-    ])
-    return pipe.fit_transform(df)
+    def processed(self):
+        df = self.featureEncoder()
+        return df.dropna()
     
-    
-      
+def scale(df, oversample=False):
+    X = df[df.columns[:-1]].values
+    y = df[df.columns[-1]].values
+
+    scaler = StandardScaler()
+    X = scaler.fit_transform(X)
+
+    if oversample: 
+        ros = RandomOverSampler()
+        X, y = ros.fit_resample(X,y)
+
+    data = np.hstack((X, np.reshape(y,(-1, 1))))
+
+    return data, X, y
