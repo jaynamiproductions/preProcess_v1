@@ -1,6 +1,6 @@
 # preProcess_v1
 
-<h2>Machine Learning Preprocessing Pipeline and Demo</h2>
+<h2>Machine Learning Preprocessing Pipeline and Interface</h2>
 
 <p><i>Configured for UCI Diabetes dataset</i></p>
 
@@ -11,7 +11,7 @@
   <li>Filtering unnecessary columns</li>
   <li>Cleaning text data</li>
   <li>Handling missing values</li>
-  <li>Mapping binary categories to 0 or 1</li>
+  <li>Mapping ordinal categories to integers</li>
   <li>One hot encoding</li>
   <li>Oversampling function</li>
 </ul>
@@ -24,4 +24,4 @@
   <li>K Nearest Neighbors</li>
 </ul>
 
-Inspired by <a href="https://www.youtube.com/watch?v=h1BnRBzYjYY&t=547s">NeuralNine's pipeline demonstration</a>
+
