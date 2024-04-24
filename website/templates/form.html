@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% block model %}{% endblock %}
+<p>Enter patient information to predict readmission classification</p>
+---
+<form method="POST">
+    <div class="form-group">
+        <label for="predict">Enter patient race</label>
+        <input 
+            type="text"
+            class="form-control"
+            id="race"
+            name="race"
+            placeholder="Enter patient race"/>
+    </div>
+    <div class="form-group">
+        <label for="gender">Enter patient gender</label>
+        <input 
+            type="text"
+            class="form-control"
+            id="gender"
+            name="gender"
+            placeholder="Enter patient gender"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary"><u>Predict</u></button>
+</form>
+
+{% endblock %}

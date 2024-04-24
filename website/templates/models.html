@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="POST">
+    <div class="form-group">
+    <label for="model">Select an option:</label>
+        <select            
+            class="model"
+            id="model"
+            name="model"
+        >
+            <option value="none"></option>
+            <option value="Logistic Regression">Logistic Regression</option>
+            <option value="K-Nearest Neighbors">K-Nearest Neighbors</option>
+            <option value="Decision Tree Classifier">Decision Tree Classifier</option>
+            <option value="Random Forest Classifier">Random Forest Classifier</option>
+        </select>
+    </div>
+
+<br/>
+<button type="submit" class="btn btn-primary"><u>Initialize Model</u></button>
+</form>
+{{msg}}
+{% endblock %}

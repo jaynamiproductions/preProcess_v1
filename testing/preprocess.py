@@ -5,8 +5,8 @@ from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import RandomOverSampler
 
 class PreProcess:
-    def __init__(self, file):
-        self.df = pd.read_csv(file)
+    def __init__(self, df):
+        self.df = df
 
     def columnFilter(self):
         cols = ['race', 'gender', 'age', 'time_in_hospital', 
@@ -67,3 +67,9 @@ def Scale(df, scale=False,oversample=False):
     data = np.hstack((X, np.reshape(y,(-1, 1))))
 
     return data, X, y
+
+def processNew(df):
+    df['gender'] = df['gender'].map({'Male': 0,'Female': 1})
+    df['diabetesMed'] = df['diabetesMed'].map({'No': 0,'Yes': 1})
+    df['age'] = df['age'].map({'[0-10]': 1, '[10-20]': 2, '[20-30]': 3, '[30-40]': 4,'[40-50]': 5, '[50-60]': 6, '[60-70]': 7, '[70-80]': 8, '[80-90]': 9, '[90-100]': 10})
+    return df
