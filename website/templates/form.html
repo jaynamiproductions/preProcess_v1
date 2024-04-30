@@ -6,25 +6,173 @@
 ---
 <form method="POST">
     <div class="form-group">
-        <label for="predict">Enter patient race</label>
+        <label for="name">Enter patient name:</label>
         <input 
             type="text"
             class="form-control"
-            id="race"
-            name="race"
-            placeholder="Enter patient race"/>
-    </div>
-    <div class="form-group">
-        <label for="gender">Enter patient gender</label>
-        <input 
-            type="text"
-            class="form-control"
-            id="gender"
-            name="gender"
-            placeholder="Enter patient gender"/>
+            id="name"
+            name="name"
+            required
+            />
     </div>
 
+    <div class="form-group">
+        <label for="race">Select patient race:</label>
+            <select            
+                class="form-control"
+                id="race"
+                name="race"
+                required
+            >
+                <option value=""></option>
+                <option value="AfricanAmerican">African American</option>
+                <option value="Asian">Asian</option>
+                <option value="Caucasian">Caucasian</option>
+                <option value="Hispanic">Hispanic</option>
+                <option value="Other">Other</option>
+            </select>
+    </div>
+
+    <div class="form-group">
+        <label for="gender">Select patient gender:</label>
+            <select            
+                class="form-control"
+                id="gender"
+                name="gender"
+                required
+            >
+                <option value=""></option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="age">Select patient age range:</label>
+                <select            
+                    class="form-control"
+                    id="age"
+                    name="age"
+                    required
+                >
+                    <option value=""></option>
+                    <option value="[0-10]">[0-10]</option>
+                    <option value="[10-20]">[10-20]</option>
+                    <option value="[20-30]">[20-30]</option>
+                    <option value="[30-40]">[30-40]</option>
+                    <option value="[40-50]">[40-50]</option>
+                    <option value="[50-60]">[50-60]</option>
+                    <option value="[60-70]">[60-70]</option>
+                    <option value="[70-80]">[70-80]</option>
+                    <option value="[80-90]">[80-90]</option>
+                    <option value="[90-100]">[90-100]</option>
+                </select>
+        </div>
+
+        <div class="form-group">
+            <label for="time_in_hospital">Days spent in hospital:</label>
+            <input 
+                type="number"
+                class="form-control"
+                id="time_in_hospital"
+                name="time_in_hospital"
+                required/>
+                
+        </div>
+
+        <div class="form-group">
+            <label for="num_lab_procedures">Total lab procedures:</label>
+            <input 
+                type="number"
+                class="form-control"
+                id="num_lab_procedures"
+                name="num_lab_procedures"
+                required/>
+        </div>
+
+        <div class="form-group">
+            <label for="num_procedures">Total overall procedures:</label>
+            <input 
+                type="number"
+                class="form-control"
+                id="num_procedures"
+                name="num_procedures"
+                required/>
+        </div>
+
+        <div class="form-group">
+            <label for="num_medications">Number of medications:</label>
+            <input 
+                type="number"
+                class="form-control"
+                id="num_medications"
+                name="num_medications"
+                required/>
+        </div>
+
+        <div class="form-group">
+            <label for="number_outpatient">Total outpatient visits:</label>
+            <input 
+                type="number"
+                class="form-control"
+                id="number_outpatient"
+                name="number_outpatient"
+                required/>
+        </div>
+
+        <div class="form-group">
+            <label for="number_emergency">Total emergency visits:</label>
+            <input 
+                type="number"
+                class="form-control"
+                id="number_emergency"
+                name="number_emergency"
+                required/>
+        </div>
+
+        <div class="form-group">
+            <label for="number_inpatient">Total inpatient visits:</label>
+            <input 
+                type="number"
+                class="form-control"
+                id="number_inpatient"
+                name="number_inpatient"
+                required/>
+        </div>
+
+        <div class="form-group">
+            <label for="number_diagnoses">Total diagnoses:</label>
+            <input 
+                type="number"
+                class="form-control"
+                id="number_diagnoses"
+                name="number_diagnoses"
+                required/>
+        </div>
+
+        <div class="form-group">
+            <label for="med">Is the patient taking diabetes medication?</label>
+                <select            
+                    class="form-control"
+                    id="med"
+                    name="med"
+                    required
+                >
+                    <option value=""></option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+        </div>
+
+
+<br>
     <button type="submit" class="btn btn-primary"><u>Predict</u></button>
 </form>
+<br>
+
+{% if name %}
+<p><b>Patient name:</b> <i>{{name}}</i></p>
+<p><b>Results:</b> Based on the calculations of this ML model, {{name}} {{prediction}}</p>
+{% endif %}
 
 {% endblock %}

@@ -68,8 +68,10 @@ def Scale(df, scale=False,oversample=False):
 
     return data, X, y
 
-def processNew(df):
+def processNew(new):
+    df = pd.DataFrame(new,index=[0])
     df['gender'] = df['gender'].map({'Male': 0,'Female': 1})
     df['diabetesMed'] = df['diabetesMed'].map({'No': 0,'Yes': 1})
     df['age'] = df['age'].map({'[0-10]': 1, '[10-20]': 2, '[20-30]': 3, '[30-40]': 4,'[40-50]': 5, '[50-60]': 6, '[60-70]': 7, '[70-80]': 8, '[80-90]': 9, '[90-100]': 10})
-    return df
+    arr = list(df.to_dict('records')[0].values())
+    return np.reshape(arr, (1,-1))
